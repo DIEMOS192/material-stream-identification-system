@@ -1,0 +1,39 @@
+import albumentations as A
+import os
+import cv2
+import numpy as np
+
+# augmentations 5 times per image
+augment = A.Compose([
+    A.Rotate(limit=15, p=1.0, border_mode=cv2.BORDER_REFLECT_101),
+    A.HorizontalFlip(p=0.5),
+    A.RandomBrightnessContrast(p=0.3),
+    A.GaussianBlur(blur_limit=3, p=0.2)
+])
+
+material_dir = os.listdir("dataset")
+aug_per_image = 2
+
+for material in material_dir:
+
+    pathToMaterial = os.path.join("dataset", material)
+    if not os.path.isdir(pathToMaterial):
+        print("Not a directory:", pathToMaterial)
+        continue
+
+    for img_name in os.listdir(pathToMaterial):
+
+        if img_name.startswith("aug_"):
+            continue
+        pathToImg = os.path.join(pathToMaterial, img_name)
+        image = cv2.imread(pathToImg)
+
+        if image is None:
+            continue
+
+        for i in range(aug_per_image):
+            augmented = augment(image=image)["image"]
+            name = f"aug{i}_{img_name}"
+            cv2.imwrite(os.path.join(pathToMaterial, name), augmented)
+
+
