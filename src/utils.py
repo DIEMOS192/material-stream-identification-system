@@ -1,6 +1,7 @@
 import random
 import cv2
 import os
+import numpy as np
 def read_random_image(directory):
     """Reads a random image from the specified directory."""
     images = [img for img in os.listdir(directory) if img.endswith(('.png', '.jpg', '.jpeg'))]
@@ -12,6 +13,7 @@ def read_random_image(directory):
     return image
 
 def calculate_training_data_size(training_data_folder=None):
+    
     parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'raw'))
     if training_data_folder is None or training_data_folder.strip() == ''\
     or training_data_folder == 'raw':
@@ -33,3 +35,49 @@ def calculate_training_data_size(training_data_folder=None):
         return total
  
 
+
+def get_full_training_test_data():
+    dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data',\
+                                        'features'))
+    training_data = {}
+    test_data = {}
+    train_portion = 0.8
+    random.seed(42)
+    for data_folder in os.listdir(dir):
+        data_folder_path = os.path.join(dir, data_folder)
+        if os.path.isdir(data_folder_path):
+            folder_data = []
+            for data_file in os.listdir(data_folder_path):
+                if data_file.endswith('.npy'):
+                    file_path = os.path.join(data_folder_path, data_file)
+                    data_array = np.load(file_path)
+                    folder_data.append(data_array)
+            random.shuffle(folder_data)
+            for_train = int(len(folder_data) * train_portion)
+            training_data[data_folder] = folder_data[:for_train]
+            test_data[data_folder] = folder_data[for_train:]
+    return training_data, test_data
+        
+            
+
+                        
+     
+
+def are_all_training_data_jpg()->bool:
+    res:bool = True
+    dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'raw'))
+    for folder in os.listdir(dir):
+        folder_path = os.path.join(dir, folder)
+        if os.path.isdir(folder_path):
+            for img in os.listdir(folder_path):
+                if not img.lower().endswith('.jpg'):
+                    res = False
+                    return res
+    return res
+
+            
+
+
+if __name__ == "__main__":
+    # print(are_all_training_data_jpg())
+    pass

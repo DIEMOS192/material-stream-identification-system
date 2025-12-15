@@ -21,7 +21,7 @@ class FeatureExtractor:
 def read_folder_images(folder):
     images = []
     for img_name in os.listdir(folder):
-        if img_name.endswith(('.png', '.jpg', '.jpeg')):
+        if img_name.endswith(('.jpg')):
             img_path = os.path.join(folder, img_name)
             image = cv2.imread(img_path)
             if image is not None:
