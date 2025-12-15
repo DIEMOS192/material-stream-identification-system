@@ -58,6 +58,12 @@ def get_full_training_test_data():
             test_data[data_folder] = folder_data[for_train:]
     return training_data, test_data
         
+
+def get_train_test_data_size()->tuple[int, int]:
+    (train_data, test_data) = get_full_training_test_data()
+    train_size = sum(len(v) for v in train_data.values())
+    test_size = sum(len(v) for v in test_data.values())
+    return train_size, test_size
             
 
                         
