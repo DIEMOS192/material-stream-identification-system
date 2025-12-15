@@ -60,13 +60,23 @@ def get_full_training_test_data():
         
 
 def get_train_test_data_size()->tuple[int, int]:
+    
     (train_data, test_data) = get_full_training_test_data()
     train_size = sum(len(v) for v in train_data.values())
     test_size = sum(len(v) for v in test_data.values())
     return train_size, test_size
             
 
-                        
+def clear_outdated_train_test_data():
+    dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data',\
+                                       'features'))
+    for data_folder in os.listdir(dir):
+        data_folder_path = os.path.join(dir, data_folder)
+        if os.path.isdir(data_folder_path):
+            for data_file in os.listdir(data_folder_path):
+                if data_file.endswith('.npy'):
+                    file_path = os.path.join(data_folder_path, data_file)
+                    os.remove(file_path)
      
 
 def are_all_training_data_jpg()->bool:

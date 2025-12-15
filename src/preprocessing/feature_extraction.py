@@ -4,6 +4,9 @@ import random
 import numpy as np
 from sys import path as sys_path
 sys_path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from utils import clear_outdated_train_test_data
+from skimage.feature import hog
+
 
 class FeatureExtractor:
     
@@ -12,11 +15,25 @@ class FeatureExtractor:
         image = cv2.normalize(image, None, 0, 255, cv2.NORM_MINMAX)
         return image.flatten()
     
-    def extract_color_histogram(self):
-        pass
+    def extract_color_histogram(self, image):
+        pixel_bins = [16, 8, 8]
+        image = cv2.resize(image, (64, 64))
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        hist = cv2.calcHist([image], [0, 1, 2], None, pixel_bins,
+                            [0, 180, 0, 256, 0, 256])
+        hist = cv2.normalize(hist, None).flatten()
+        return hist
 
-    def extract_hog(self):
-        pass
+    def extract_hog(self, image):
+        image = cv2.resize(image, (64, 64))
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        features = hog(gray, pixels_per_cell=(16, 16),\
+                        cells_per_block=(2, 2),
+                        orientations=9,
+                        block_norm='L1',
+                        visualize=False)
+        return features
+        
 
 def read_folder_images(folder):
     images = []
@@ -43,14 +60,18 @@ def main():
             category_path = os.path.join(data_folder, category)
 
             images = read_folder_images(category_path)
-            extractor = FeatureExtractor()
             data_from = os.path.basename(data_folder)
 
             count = 1
             for  image in images:
-                flattened = extractor.flatten_image(image)
-                print(f"Category: {category}, Image {count}, Flattened size: {flattened.shape}")
-                np.save(os.path.join(category_save_folder, f"{category}_{data_from}_flattened_{count}.npy"), flattened)
+                histogram = FeatureExtractor().extract_color_histogram(image)
+                histogram = histogram/np.linalg.norm(histogram)
+                hog = FeatureExtractor().extract_hog(image)
+                hog = hog/np.linalg.norm(hog)
+                histogram_hog = np.concatenate((histogram, hog))
+                histogram_hog = histogram_hog/np.linalg.norm(histogram_hog)
+                print(f"Category: {category}, Image {count}, Histogram size: {histogram_hog.shape}")
+                np.save(os.path.join(category_save_folder, f"{category}_{data_from}_histogram_hog_{count}.npy"), histogram_hog)
                 count += 1
 
 
@@ -58,6 +79,7 @@ def main():
 
 
 if __name__ == "__main__":
+    clear_outdated_train_test_data()
     main()
 
 

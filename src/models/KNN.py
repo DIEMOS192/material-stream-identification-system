@@ -47,11 +47,16 @@ def main():
     os.makedirs(accuracy_folder, exist_ok=True)
     os.makedirs(confusion_folder, exist_ok=True)
     logs_file = os.path.join(base_results, 'logs.txt')
-    accuracy_file = os.path.join(accuracy_folder, 'accuracies.csv')
+    accuracy_file = os.path.join(accuracy_folder, 'knn_accuracies.csv')
 
     
-    with open(accuracy_file, 'w') as f:
-        f.write("timestamp,k,accuracy\n")
+    with open(logs_file, 'a') as log_file:
+        log_file.write(f"\n=== Run at {datetime.now()} ===\n")
+        log_file.write("Changes/Approach: HOG tweaks\n")
+        log_file.write(f"Number of training samples: {len(X_train)}, Number of test samples: {len(X_test)}\n")
+        log_file.write("K collection results:\n")
+
+
 
     
 
@@ -61,7 +66,7 @@ def main():
     with open(accuracy_file, 'w', newline='') as f:
         f.write(f"Timestamp,K,Accuracy\n")
     for k in K_values:
-        knn_model = KNeighborsClassifier(n_neighbors=k, metric='cosine', \
+        knn_model = KNeighborsClassifier(n_neighbors=k, metric='manhattan', \
                                             weights='distance')
         knn_model.fit(X_train, y_train)
         y_pred = knn_model.predict(X_test)
