@@ -40,8 +40,7 @@ def get_full_training_test_data()->dict:
     features_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data',\
                                         'features'))
     full_data = {}
-    random.seed(42)
-    for data_folder in os.listdir(features_dir):
+    for data_folder in sorted(os.listdir(features_dir)):
         data_folder_path = os.path.join(features_dir, data_folder)
         if os.path.isdir(data_folder_path):
             folder_data = []
@@ -50,7 +49,6 @@ def get_full_training_test_data()->dict:
                     file_path = os.path.join(data_folder_path, data_file)
                     data_array = np.load(file_path)
                     folder_data.append(data_array)
-            random.shuffle(folder_data)
             full_data[data_folder] = folder_data
     return full_data
         

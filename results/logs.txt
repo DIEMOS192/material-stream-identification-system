@@ -221,3 +221,348 @@ Changes/Approach: HOG tweaks
 Number of training samples: 2304, Number of test samples: 577
 K collection results:
 2025-12-16 16:05:24.852439 - Best K=5, Accuracy=0.7608
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 16:24:31.952124 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2304, Number of test samples: 577
+K collection results:
+2025-12-16 16:24:32.774167 - Best K=1, Accuracy=0.7626
+
+=== Run at 2025-12-16 16:24:53.458443 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2304, Number of test samples: 577
+Accuracy: 0.7955
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 17:29:17.493057 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2304, Number of test samples: 577
+K collection results:
+2025-12-16 17:29:18.340671 - Best K=7, Accuracy=0.6984
+
+=== Run at 2025-12-16 17:29:34.398161 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2304, Number of test samples: 577
+Accuracy: 0.7314
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 17:32:36.128392 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2304, Number of test samples: 577
+K collection results:
+2025-12-16 17:32:36.950284 - Best K=7, Accuracy=0.7140
+
+=== Run at 2025-12-16 17:32:58.794680 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2304, Number of test samples: 577
+Accuracy: 0.7366
+
+=== Run at 2025-12-16 17:59:37.033527 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2165, Number of test samples: 542
+Accuracy: 0.7970
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 17:59:47.606166 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2165, Number of test samples: 542
+K collection results:
+2025-12-16 17:59:48.358879 - Best K=1, Accuracy=0.8118
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 18:50:39.071632 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2169, Number of test samples: 543
+K collection results:
+2025-12-16 18:50:39.903394 - Best K=1, Accuracy=0.8250
+
+=== Run at 2025-12-16 18:51:02.134814 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2169, Number of test samples: 543
+Accuracy: 0.8011
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 18:58:25.195737 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2169, Number of test samples: 543
+K collection results:
+2025-12-16 18:58:25.948644 - Best K=1, Accuracy=0.7459
+
+=== Run at 2025-12-16 18:58:43.477712 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2169, Number of test samples: 543
+Accuracy: 0.7643
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:00:44.445591 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2169, Number of test samples: 543
+K collection results:
+2025-12-16 19:00:45.235263 - Best K=1, Accuracy=0.7366
+
+=== Run at 2025-12-16 19:01:00.252857 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2169, Number of test samples: 543
+Accuracy: 0.7311
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:01:55.307600 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2169, Number of test samples: 543
+K collection results:
+2025-12-16 19:01:56.103361 - Best K=3, Accuracy=0.7882
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:01:59.897527 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2169, Number of test samples: 543
+K collection results:
+2025-12-16 19:02:00.629914 - Best K=3, Accuracy=0.7882
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:03:33.822662 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2167, Number of test samples: 542
+K collection results:
+2025-12-16 19:03:34.538224 - Best K=1, Accuracy=0.7878
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:04:26.481785 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:04:27.082736 - Best K=3, Accuracy=0.8207
+
+=== Run at 2025-12-16 19:04:41.136486 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2164, Number of test samples: 541
+Accuracy: 0.8022
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:05:11.792740 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:05:12.393158 - Best K=1, Accuracy=0.8004
+
+=== Run at 2025-12-16 19:05:25.763057 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2164, Number of test samples: 541
+Accuracy: 0.7874
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:05:52.674552 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:05:53.294139 - Best K=1, Accuracy=0.8244
+
+=== Run at 2025-12-16 19:06:07.577523 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2164, Number of test samples: 541
+Accuracy: 0.8041
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:06:38.460882 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:06:38.943287 - Best K=1, Accuracy=0.8207
+
+=== Run at 2025-12-16 19:06:54.688374 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2164, Number of test samples: 541
+Accuracy: 0.8022
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:07:24.845588 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:07:25.365183 - Best K=1, Accuracy=0.8244
+
+=== Run at 2025-12-16 19:07:35.742407 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2164, Number of test samples: 541
+Accuracy: 0.7985
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 38, 7, 9}
+
+=== Run at 2025-12-16 19:10:13.498373 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 1492, Number of test samples: 373
+K collection results:
+2025-12-16 19:10:13.785029 - Best K=3, Accuracy=0.7078
+
+=== Run at 2025-12-16 19:10:24.721717 ===
+Changes/Approach: kernel SVM
+Number of training samples: 1492, Number of test samples: 373
+Accuracy: 0.7426
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:12:40.309064 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:12:40.795991 - Best K=1, Accuracy=0.8244
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:13:10.688669 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:13:11.180602 - Best K=1, Accuracy=0.8244
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:13:22.698230 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:13:23.287551 - Best K=1, Accuracy=0.8244
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:13:59.214838 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:13:59.956287 - Best K=3, Accuracy=0.8115
+
+=== Run at 2025-12-16 19:14:13.673303 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2164, Number of test samples: 541
+Accuracy: 0.8115
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 46}
+
+=== Run at 2025-12-16 19:15:36.243448 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2164, Number of test samples: 541
+K collection results:
+2025-12-16 19:15:37.037081 - Best K=3, Accuracy=0.7301
+
+=== Run at 2025-12-16 19:15:52.570455 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2164, Number of test samples: 541
+Accuracy: 0.7634
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 44}
+
+=== Run at 2025-12-16 19:26:48.620136 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 1899, Number of test samples: 475
+K collection results:
+2025-12-16 19:26:49.205937 - Best K=1, Accuracy=0.7768
+
+=== Run at 2025-12-16 19:27:01.014791 ===
+Changes/Approach: kernel SVM
+Number of training samples: 1899, Number of test samples: 475
+Accuracy: 0.7916
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 19:28:57.289252 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2306, Number of test samples: 577
+K collection results:
+2025-12-16 19:28:58.121346 - Best K=5, Accuracy=0.8146
+
+=== Run at 2025-12-16 19:29:14.436709 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2306, Number of test samples: 577
+Accuracy: 0.8215
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 19:36:31.205699 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2306, Number of test samples: 577
+K collection results:
+2025-12-16 19:36:31.999763 - Best K=3, Accuracy=0.8198
+
+=== Run at 2025-12-16 19:36:47.261860 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2306, Number of test samples: 577
+Accuracy: 0.8215
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 19:38:19.233599 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2306, Number of test samples: 577
+K collection results:
+2025-12-16 19:38:20.052962 - Best K=1, Accuracy=0.7504
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 19:42:28.845216 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2306, Number of test samples: 577
+K collection results:
+2025-12-16 19:42:29.700351 - Best K=1, Accuracy=0.7504
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 19:42:34.309471 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2306, Number of test samples: 577
+K collection results:
+2025-12-16 19:42:35.227964 - Best K=1, Accuracy=0.7504
+
+=== Run at 2025-12-16 19:42:52.057169 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2306, Number of test samples: 577
+Accuracy: 0.7834
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 19:44:12.592223 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2306, Number of test samples: 577
+K collection results:
+2025-12-16 19:44:13.432720 - Best K=1, Accuracy=0.7504
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 19:54:06.261840 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2306, Number of test samples: 577
+K collection results:
+2025-12-16 19:54:07.085305 - Best K=1, Accuracy=0.7314
+
+=== Run at 2025-12-16 19:54:23.171846 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2306, Number of test samples: 577
+Accuracy: 0.8146
+
+=== Run at 2025-12-16 20:05:44.634856 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2306, Number of test samples: 577
+Accuracy: 0.8094
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
+
+=== Run at 2025-12-16 20:05:53.152343 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2306, Number of test samples: 577
+K collection results:
+2025-12-16 20:05:53.976328 - Best K=1, Accuracy=0.7452

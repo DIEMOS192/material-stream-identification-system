@@ -96,7 +96,7 @@ def main():
 
         # Save confusion matrices per K
         cm_file = os.path.join(confusion_folder, f'confusion_matrix_k{k}.txt')
-        with open(cm_file, 'a') as f:
+        with open(cm_file, 'w') as f:
             f.write(f"{datetime.now()} - Confusion Matrix K={k}:\n{conf_matrix}\n\n")
 
         # Write accuracy to CSV

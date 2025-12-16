@@ -1,83 +1,199 @@
-import os
+
 import cv2
 import random
+import sys
+import os
 import numpy as np
-from sys import path as sys_path
-sys_path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from utils import clear_outdated_train_test_data
-from skimage.feature import hog
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from utils import  calculate_training_data_size, get_max_data_folder
 
 
-class FeatureExtractor:
-    
-    def flatten_image(self, image):
-        image = cv2.resize(image, (64, 64))
-        image = cv2.normalize(image, None, 0, 255, cv2.NORM_MINMAX)
-        return image.flatten()
-    
-    def extract_color_histogram(self, image):
-        pixel_bins = [16, 8, 8]
-        image = cv2.resize(image, (64, 64))
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        hist = cv2.calcHist([image], [0, 1, 2], None, pixel_bins,
-                            [0, 180, 0, 256, 0, 256])
-        hist = cv2.normalize(hist, None).flatten()
-        return hist
+class GeometricAugmentor:
 
-    def extract_hog(self, image):
-        image = cv2.resize(image, (64, 64))
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        features = hog(gray, pixels_per_cell=(16, 16),\
-                        cells_per_block=(2, 2),
-                        orientations=12,
-                        block_norm='L1',
-                        visualize=False)
-        return features
+    def rotate(self,image, angle=15):
+        angle = random.uniform(-angle, angle)
+
+        (height, width, degenerate) = image.shape
+        center = (width // 2, height // 2)
+        rotation_matrix = cv2.getRotationMatrix2D(center, angle, 1.0)
+        rotated = cv2.warpAffine(image, rotation_matrix, (width, height), \
+                                 borderMode=cv2.BORDER_REFLECT_101)
+        return rotated
         
+        
+    def flip(self, image, hr = 0.5): #horizontal only
+        return cv2.flip(image, 1) if random.random() < hr else image
+        
+    def scale(self, image, scaling=None):#0.9-1.1x
+        if scaling is None or scaling < 0.9 or scaling > 1.1:
+            scaling = random.uniform(0.9, 1.1)
+        (height, width, channels) = image.shape
+        center = (width // 2, height // 2)
+        rotation_matrix = cv2.getRotationMatrix2D(center, 0, scaling)
+        scaled = cv2.warpAffine(image, rotation_matrix, (width, height))
+        return scaled
+    # def random_crop(self, image, pos:str=None, size:float=None):
+    #     if pos is None or pos not in ['tl', 'tr', 'bl', 'br', 'c']:
+    #         pos = random.choice(['tl', 'tr', 'bl', 'br', 'c'])
+    #     if size is None or size < 0.5 or size > 0.9:
+    #         size = random.uniform(0.5, 0.9)
+    #     new_img = None
+    #     (height, width, channels) = image.shape
+    #     new_height = int(height * size)
+    #     new_width = int(width * size)
+    #     if pos == 'tl':
+    #         new_img = image[0:new_height, 0:new_width]
+    #     elif pos == 'tr':
+    #         new_img = image[0:new_height, width - new_width:width]
+    #     elif pos == 'bl':
+    #         new_img = image[height - new_height:height, 0:new_width]
+    #     elif pos == 'br':
+    #         new_img = image[height - new_height:height, width - new_width:width]
+    #     elif pos == 'c':
+    #         start_y = (height - new_height) // 2
+    #         start_x = (width - new_width) // 2
+    #         new_img = image[start_y:start_y + new_height, start_x:start_x + new_width]
 
-def read_folder_images(folder):
-    images = []
-    for img_name in os.listdir(folder):
-        if img_name.endswith(('.jpg')):
-            img_path = os.path.join(folder, img_name)
-            image = cv2.imread(img_path)
-            if image is not None:
-                images.append(image)
-    return images
+    #     return new_img
+    def random_resize(self, image, factor:float=None):
+        if factor is None or factor < 0.8 or factor > 1.2:
+            factor = random.uniform(0.8, 1.2)
+        (height, width, channels) = image.shape
+        resized = cv2.resize(image, (int(width * factor), int(height * factor)))
+        return resized
+
+class PhotometricAugmentor:
+
+    def adjust_brightness(self, image, constant = 30): # 30 or -30
+        if constant not in [-30, 30]:
+            constant = random.choice([-30, 30])
+        img = cv2.convertScaleAbs(image, alpha=1, beta=constant)
+        return img
+    def adjust_contrast(self, image, constant = None): # between 0.8 and 1.2
+        if constant is None or constant < 0.8 or constant > 1.2:
+            constant = random.uniform(0.8, 1.2)
+        img = cv2.convertScaleAbs(image, alpha=constant, beta=0)
+        return img
+    
+    def adjust_brightness_contrast(self, image):
+        
+        brightness = random.uniform(-30, 30)
+        contrast = random.uniform(0.9, 1.1)
+        img = cv2.convertScaleAbs(image, alpha=contrast, beta=brightness)
+        return img
+    # def add_noise(self, image, noise = None): # from 5 to 15 # should we keep it?
+    #     if noise is None or noise < 5 or noise > 15:
+    #         noise = random.randint(5, 15)
+    #     gauss = np.random.normal(0, noise, image.shape)
+    #     noisy = image.astype(np.float32) + gauss
+    #     noisy = np.clip(noisy, 0, 255).astype(np.uint8)
+    #     return noisy
+    def Gauss_blur(self, image, ksize = 3, prob = 0.2):
+        return cv2.GaussianBlur(image, (ksize, ksize), 0) \
+            if random.random() < prob else image 
+
+
+def choose_random_augmentation():
+
+
+    types = [GeometricAugmentor, PhotometricAugmentor]
+    AugmentorClass = random.choice(types)
+    algorithm = AugmentorClass()
+    GeoMethods = ['rotate', 'flip', 'scale', 'random_resize']
+    PhotoMethods = ['adjust_brightness', 'adjust_contrast', 'add_noise']
+    if AugmentorClass == GeometricAugmentor:
+        method_name = random.choice(GeoMethods)
+    else:
+        method_name = random.choice(PhotoMethods)
+    method = getattr(algorithm, method_name)
+    return method
+
+
+
+def fixed_augment_cycle(image):
+    geoAug = GeometricAugmentor()
+    photoAug = PhotometricAugmentor()
+    image = geoAug.rotate(image)
+    if random.random() < 0.5:
+        image = geoAug.flip(image)
+    if random.random() < 0.3:
+        image = photoAug.adjust_brightness_contrast(image)
+    image = photoAug.Gauss_blur(image)
+    return image
 
 def main():
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     raw_data_folder = os.path.join(root, 'data', 'raw')
     aug_data_folder = os.path.join(root, 'data', 'augmented')
-    save_folder = os.path.join(root, 'data', 'features')
-    for data_folder in [raw_data_folder, aug_data_folder]:
-        if not os.path.exists(save_folder):
-            os.makedirs(save_folder)
-        for category in os.listdir(data_folder):
-            category_save_folder = os.path.join(save_folder, category)
-            if not os.path.exists(category_save_folder):
-                os.makedirs(category_save_folder)
-            category_path = os.path.join(data_folder, category)
+    for category in os.listdir(raw_data_folder):
+        full_size = calculate_training_data_size(os.path.join(raw_data_folder, category))
+        max_size = get_max_data_folder()
+        aug_size = int((max_size - full_size)) + 20
+        if aug_size <= 0:
+            aug_size = 20
+        category_path = os.path.join(raw_data_folder, category)
+        save_category_path = os.path.join(aug_data_folder, category)
+        if not os.path.exists(save_category_path):
+            os.makedirs(save_category_path)
+        imgs = os.listdir(category_path)
+        count = 1
+        attempts = 0
+        while True:
+            attempts += 1
+            if attempts > calculate_training_data_size() * 2:
+                break
+            img = random.choice(imgs)
+            img_name = 'augmented_' + category + '_' + str(count) + '.jpg'
+            image = cv2.imread(os.path.join(category_path, img))
+            if image is None:
+                continue
+            for i in range(random.randint(1,4)):
+                method = choose_random_augmentation()
+                image = method(image)
+            augmented_image = image
+            if augmented_image is None:
+                continue
+            cv2.imwrite(os.path.join(save_category_path, img_name), augmented_image)
+            count += 1
+            if count > aug_size:
+                break
 
-            images = read_folder_images(category_path)
-            data_from = os.path.basename(data_folder)
+def main_v2():
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    raw_data_folder = os.path.join(root, 'data', 'raw')
+    aug_data_folder = os.path.join(root, 'data', 'augmented')
+    for category in os.listdir(raw_data_folder):
+        full_size = calculate_training_data_size(os.path.join(raw_data_folder, category))
+        max_size = get_max_data_folder()
+        aug_size = int((max_size - full_size)) + 20
+        if aug_size <= 0:
+            aug_size = 20
+        category_path = os.path.join(raw_data_folder, category)
+        save_category_path = os.path.join(aug_data_folder, category)
+        if not os.path.exists(save_category_path):
+            os.makedirs(save_category_path)
+        imgs = os.listdir(category_path)
+        count = 1
+        attempts = 0
+        while count <= aug_size:
+            attempts += 1
+            if attempts > full_size * 2:
+                break
 
-            count = 1
-            for  image in images:
-                histogram = FeatureExtractor().extract_color_histogram(image)
-                histogram = histogram/np.linalg.norm(histogram)
-                hog = FeatureExtractor().extract_hog(image)
-                hog = hog/np.linalg.norm(hog)
-                histogram_hog = np.concatenate((histogram, hog))
-                histogram_hog = histogram_hog/np.linalg.norm(histogram_hog)
-                print(f"Category: {category}, Image {count}, Histogram size: {histogram_hog.shape}")
-                np.save(os.path.join(category_save_folder, f"{category}_{data_from}_histogram_hog_{count}.npy"), histogram_hog)
-                count += 1
-
-
-
-
+            img = random.choice(imgs)
+            img_name = 'augmented_' + category + '_' + str(count) + '.jpg'
+            image = cv2.imread(os.path.join(category_path, img))
+            if image is None:
+                continue
+            for i in range(2):
+                augmented_image = fixed_augment_cycle(image.copy())
+                if augmented_image is None:
+                    continue
+                img_name = 'augmented_' + category + '_' + str(count) + '.jpg'
+                cv2.imwrite(os.path.join(save_category_path, img_name), augmented_image)
+                count += 1   
 
 if __name__ == "__main__":
-    clear_outdated_train_test_data()
-    main()
+    # main()
+    main_v2()
+

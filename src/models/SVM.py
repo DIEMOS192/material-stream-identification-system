@@ -1,5 +1,5 @@
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-from sklearn.preprocessing import Normalizer
+from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC, SVC
 import numpy as np
@@ -44,15 +44,17 @@ def main():
     X_train, X_test, y_train, y_test = \
         train_test_split(X, y, train_size=0.8, random_state=42, stratify=y)
     # norm = Normalizer()
-    PC = PCA(n_components=0.99, random_state=42)
-    X_train = PC.fit_transform(X_train)
-    X_test = PC.transform(X_test)
-    svm_model = SVC(kernel='rbf', C=1.0, gamma='scale', class_weight='balanced', random_state=42)
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+
+    svm_model = SVC(kernel='rbf', C=10.0, gamma='scale')
     svm_model.fit(X_train, y_train)
     y_pred = svm_model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
     class_report = classification_report(y_test, y_pred)
     conf_matrix = confusion_matrix(y_test, y_pred)
+    print(f"SVM Accuracy: {accuracy:.4f}")
     # results and loggings
     base_results = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'results'))
     accuracy_folder = os.path.join(base_results, 'accuracy-plots')
