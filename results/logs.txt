@@ -212,92 +212,12 @@ Number of training samples: 1966, Number of test samples: 492
 K collection results:
 2025-12-15 20:05:47.956979 - Best K=3, Accuracy=0.7927
 
-=== Run at 2025-12-15 20:06:40.713138 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:06:44.562980 - Best K=7, Accuracy=0.7967
 
-=== Run at 2025-12-15 20:07:18.337238 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:07:25.665738 - Best K=3, Accuracy=0.8089
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 5, 7, 9, 48}
 
-=== Run at 2025-12-15 20:07:56.829424 ===
+=== Run at 2025-12-16 16:05:23.921054 ===
 Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
+Number of training samples: 2304, Number of test samples: 577
 K collection results:
-2025-12-15 20:08:07.049753 - Best K=1, Accuracy=0.7886
-
-=== Run at 2025-12-15 20:08:31.945595 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:08:37.058369 - Best K=3, Accuracy=0.7907
-
-=== Run at 2025-12-15 20:09:02.252424 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:09:08.257870 - Best K=1, Accuracy=0.7825
-
-=== Run at 2025-12-15 20:09:32.508784 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:09:37.207201 - Best K=3, Accuracy=0.7886
-
-=== Run at 2025-12-15 20:09:59.865143 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:10:04.545752 - Best K=3, Accuracy=0.7764
-
-=== Run at 2025-12-15 20:10:23.664172 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:10:27.889855 - Best K=1, Accuracy=0.7805
-
-=== Run at 2025-12-15 20:11:04.497950 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:11:10.045957 - Best K=17, Accuracy=0.7581
-
-=== Run at 2025-12-15 20:11:32.713914 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:11:37.836230 - Best K=3, Accuracy=0.7907
-
-=== Run at 2025-12-15 20:12:03.165018 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:12:07.991719 - Best K=3, Accuracy=0.8028
-
-=== Run at 2025-12-15 20:13:08.846548 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:13:12.850040 - Best K=1, Accuracy=0.7947
-
-=== Run at 2025-12-15 20:14:00.720768 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:14:05.304580 - Best K=5, Accuracy=0.7846
-
-=== Run at 2025-12-15 20:14:34.926831 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:14:39.413063 - Best K=3, Accuracy=0.7886
-
-=== Run at 2025-12-15 20:15:29.981769 ===
-Changes/Approach: HOG tweaks
-Number of training samples: 1966, Number of test samples: 492
-K collection results:
-2025-12-15 20:15:33.825393 - Best K=5, Accuracy=0.7927
+2025-12-16 16:05:24.852439 - Best K=5, Accuracy=0.7608

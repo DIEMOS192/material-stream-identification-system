@@ -36,15 +36,13 @@ def calculate_training_data_size(training_data_folder=None):
  
 
 
-def get_full_training_test_data():
-    dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data',\
+def get_full_training_test_data()->dict:
+    features_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data',\
                                         'features'))
-    training_data = {}
-    test_data = {}
-    train_portion = 0.8
+    full_data = {}
     random.seed(42)
-    for data_folder in os.listdir(dir):
-        data_folder_path = os.path.join(dir, data_folder)
+    for data_folder in os.listdir(features_dir):
+        data_folder_path = os.path.join(features_dir, data_folder)
         if os.path.isdir(data_folder_path):
             folder_data = []
             for data_file in os.listdir(data_folder_path):
@@ -53,10 +51,8 @@ def get_full_training_test_data():
                     data_array = np.load(file_path)
                     folder_data.append(data_array)
             random.shuffle(folder_data)
-            for_train = int(len(folder_data) * train_portion)
-            training_data[data_folder] = folder_data[:for_train]
-            test_data[data_folder] = folder_data[for_train:]
-    return training_data, test_data
+            full_data[data_folder] = folder_data
+    return full_data
         
 
 def get_train_test_data_size()->tuple[int, int]:
@@ -68,15 +64,22 @@ def get_train_test_data_size()->tuple[int, int]:
             
 
 def clear_outdated_train_test_data():
-    dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data',\
+    features_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data',\
                                        'features'))
-    for data_folder in os.listdir(dir):
-        data_folder_path = os.path.join(dir, data_folder)
+    for data_folder in os.listdir(features_dir):
+        data_folder_path = os.path.join(features_dir, data_folder)
         if os.path.isdir(data_folder_path):
             for data_file in os.listdir(data_folder_path):
                 if data_file.endswith('.npy'):
                     file_path = os.path.join(data_folder_path, data_file)
                     os.remove(file_path)
+    # clear cache
+    cache_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'cache'))
+    if os.path.exists(cache_dir):
+        for cache_file in os.listdir(cache_dir):
+            file_path = os.path.join(cache_dir, cache_file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
      
 
 def are_all_training_data_jpg()->bool:
@@ -91,9 +94,23 @@ def are_all_training_data_jpg()->bool:
                     return res
     return res
 
-            
+
+def get_max_data_folder()->int:
+    parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'raw'))
+    max_size = 0
+    for category in os.listdir(parent_dir):
+        category_size = calculate_training_data_size(category)
+        if category_size > max_size:
+            max_size = category_size
+    return max_size
 
 
 if __name__ == "__main__":
     # print(are_all_training_data_jpg())
-    pass
+    parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'raw'))
+    for category in sorted(os.listdir(parent_dir)):
+        category_path = os.path.join(parent_dir, category)
+        if os.path.isdir(category_path):
+            size = calculate_training_data_size(category)
+            print(f"Category: {category}, Number of images: {size}")
+    print("Max data folder size:", get_max_data_folder())

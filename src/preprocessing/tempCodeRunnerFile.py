@@ -27,8 +27,11 @@ class FeatureExtractor:
     def extract_hog(self, image):
         image = cv2.resize(image, (64, 64))
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        features = hog(gray, pixels_per_cell=(8, 8),\
-                        cells_per_block=(2, 2), visualize=False, multichannel=False)
+        features = hog(gray, pixels_per_cell=(16, 16),\
+                        cells_per_block=(2, 2),
+                        orientations=12,
+                        block_norm='L1',
+                        visualize=False)
         return features
         
 
@@ -57,16 +60,16 @@ def main():
             category_path = os.path.join(data_folder, category)
 
             images = read_folder_images(category_path)
-            extractor = FeatureExtractor()
             data_from = os.path.basename(data_folder)
 
             count = 1
             for  image in images:
-                histogram_hog = extractor.extract_color_histogram(image)
-                histogram_hog = np.concatenate((
-                    histogram_hog,
-                    extractor.extract_hog(image)
-                ))
+                histogram = FeatureExtractor().extract_color_histogram(image)
+                histogram = histogram/np.linalg.norm(histogram)
+                hog = FeatureExtractor().extract_hog(image)
+                hog = hog/np.linalg.norm(hog)
+                histogram_hog = np.concatenate((histogram, hog))
+                histogram_hog = histogram_hog/np.linalg.norm(histogram_hog)
                 print(f"Category: {category}, Image {count}, Histogram size: {histogram_hog.shape}")
                 np.save(os.path.join(category_save_folder, f"{category}_{data_from}_histogram_hog_{count}.npy"), histogram_hog)
                 count += 1
@@ -78,7 +81,3 @@ def main():
 if __name__ == "__main__":
     clear_outdated_train_test_data()
     main()
-
-
-
-

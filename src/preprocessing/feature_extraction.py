@@ -16,8 +16,8 @@ class FeatureExtractor:
         return image.flatten()
     
     def extract_color_histogram(self, image):
-        pixel_bins = [16, 8, 8]
-        image = cv2.resize(image, (64, 64))
+        pixel_bins = [8, 8, 8]
+        image = cv2.resize(image, (128, 128))
         image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         hist = cv2.calcHist([image], [0, 1, 2], None, pixel_bins,
                             [0, 180, 0, 256, 0, 256])
@@ -25,12 +25,12 @@ class FeatureExtractor:
         return hist
 
     def extract_hog(self, image):
-        image = cv2.resize(image, (64, 64))
+        image = cv2.resize(image, (128, 128))
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         features = hog(gray, pixels_per_cell=(16, 16),\
-                        cells_per_block=(2, 2),
+                        cells_per_block=(3, 3),
                         orientations=9,
-                        block_norm='L1',
+                        block_norm='L2-Hys',
                         visualize=False)
         return features
         
@@ -70,9 +70,11 @@ def main():
                 hog = hog/np.linalg.norm(hog)
                 histogram_hog = np.concatenate((histogram, hog))
                 histogram_hog = histogram_hog/np.linalg.norm(histogram_hog)
-                print(f"Category: {category}, Image {count}, Histogram size: {histogram_hog.shape}")
+                vector_length = histogram_hog.shape[0]
                 np.save(os.path.join(category_save_folder, f"{category}_{data_from}_histogram_hog_{count}.npy"), histogram_hog)
                 count += 1
+    print("Feature extraction completed.")
+    print("Vector length:", vector_length)
 
 
 
@@ -81,7 +83,3 @@ def main():
 if __name__ == "__main__":
     clear_outdated_train_test_data()
     main()
-
-
-
-

@@ -5,7 +5,7 @@ import sys
 import os
 import numpy as np
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from utils import read_random_image, calculate_training_data_size
+from utils import  calculate_training_data_size, get_max_data_folder
 
 
 class GeometricAugmentor:
@@ -106,20 +106,30 @@ def main():
     aug_data_folder = os.path.join(root, 'data', 'augmented')
     for category in os.listdir(raw_data_folder):
         full_size = calculate_training_data_size(os.path.join(raw_data_folder, category))
-        aug_size = 30 / 100 * full_size
+        max_size = get_max_data_folder()
+        aug_size = int((max_size - full_size)) + 20
+        if aug_size <= 0:
+            aug_size = 20
         category_path = os.path.join(raw_data_folder, category)
         save_category_path = os.path.join(aug_data_folder, category)
         if not os.path.exists(save_category_path):
             os.makedirs(save_category_path)
         imgs = os.listdir(category_path)
         count = 1
-        for img in imgs:
+        attempts = 0
+        while True:
+            attempts += 1
+            if attempts > calculate_training_data_size() * 2:
+                break
+            img = random.choice(imgs)
             img_name = 'augmented_' + category + '_' + str(count) + '.jpg'
             image = cv2.imread(os.path.join(category_path, img))
             if image is None:
                 continue
-            method = choose_random_augmentation()
-            augmented_image = method(image)
+            for i in range(random.randint(1,4)):
+                method = choose_random_augmentation()
+                image = method(image)
+            augmented_image = image
             if augmented_image is None:
                 continue
             cv2.imwrite(os.path.join(save_category_path, img_name), augmented_image)

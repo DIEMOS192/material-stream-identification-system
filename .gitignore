@@ -8,3 +8,7 @@ __pycache__/
 # Data files
 *.npy
 
+results/my_notes.md
+# augmented images
+*.jpg
+
