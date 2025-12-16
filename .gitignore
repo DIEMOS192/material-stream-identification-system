@@ -10,5 +10,6 @@ __pycache__/
 
 results/my_notes.md
 # augmented images
-*.jpg
+data/augmented/
 
+data/cache/
