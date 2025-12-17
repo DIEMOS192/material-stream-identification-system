@@ -49,8 +49,7 @@ def main():
     X_train = norm.fit_transform(X_train)
     X_test = norm.transform(X_test)
 
-    rt = int(np.sqrt(len(X_train)))
-    K_values = [1, 3, 5, 7, 9, rt if not rt % 2 else rt + 1]
+    K_values = [1, 3, 4, 5, 7, 9]
     best_k = 1
     best_accuracy = 0.0
     

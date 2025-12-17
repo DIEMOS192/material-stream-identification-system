@@ -95,7 +95,7 @@ def choose_random_augmentation():
     types = [GeometricAugmentor, PhotometricAugmentor]
     AugmentorClass = random.choice(types)
     algorithm = AugmentorClass()
-    GeoMethods = ['rotate', 'flip', 'scale', 'random_resize']
+    GeoMethods = ['rotate', 'scale','random_resize']
     PhotoMethods = ['adjust_brightness', 'adjust_contrast', 'Gauss_blur', 'add_noise']
     if AugmentorClass == GeometricAugmentor:
         method_name = random.choice(GeoMethods)
