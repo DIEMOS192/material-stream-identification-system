@@ -1342,3 +1342,35 @@ weighted avg       1.00      1.00      1.00       542
     accuracy                           1.00       542
    macro avg       1.00      1.00      1.00       542
 weighted avg       1.00      1.00      1.00       542
+
+=== Run at 2025-12-17 18:56:15.201361 ===
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        97
+           1       1.00      1.00      1.00        96
+           2       1.00      1.00      1.00        97
+           3       1.00      1.00      1.00        94
+           4       1.00      1.00      1.00        94
+           5       1.00      1.00      1.00        64
+
+    accuracy                           1.00       542
+   macro avg       1.00      1.00      1.00       542
+weighted avg       1.00      1.00      1.00       542
+
+=== Run at 2025-12-17 19:34:20.187927 ===
+Distance-based rejection mechanism enabled (for negative class detection)
+
+=== Run at 2025-12-17 23:33:43.846984 ===
+Distance-based rejection mechanism (for negative class detection)
+
+=== Run at 2025-12-17 23:34:01.854882 ===
+Distance-based rejection mechanism (for negative class detection)
+
+=== Run at 2025-12-17 23:36:31.260244 ===
+Distance-based rejection mechanism (for negative class detection)
+
+=== Run at 2025-12-17 23:39:21.844939 ===
+Distance-based rejection mechanism (for negative class detection)
+
+=== Run at 2025-12-17 23:40:37.956736 ===
+Distance-based rejection mechanism (for negative class detection)

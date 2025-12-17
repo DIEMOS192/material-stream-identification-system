@@ -1,8 +1,13 @@
-2025-12-17 17:00:06.196605 - Confusion Matrix K=1:
-[[88  2  1  1  0  5]
- [ 0 80  5  1  9  1]
- [ 2  3 76  4  7  5]
- [ 2  4  2 81  3  2]
- [ 0  8  3  3 78  2]
- [ 0  3  1  0  1 59]]
+2025-12-17 23:40:42.253734 - K=1
+Confusion Matrix:
+[[80  3  2  2  0 10]
+ [ 0 76  6  2 11  1]
+ [ 4  5 72  1 10  5]
+ [ 2  5  4 78  3  2]
+ [ 0 10  7  3 71  3]
+ [ 1  2  1  0  2 58]]
 
+Overall Accuracy: 0.8026
+Rejection Rate: 12.36%
+Accuracy on Kept Samples: 0.8463
+Rejection Threshold (mean manhattan distance): 19.6815

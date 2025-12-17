@@ -82,17 +82,17 @@ def main():
     print("Feature extraction completed.")
     print("Vector length:", vector_length)
     
-    # important params config
-    feature_config = {
-        'resize': (64, 64),
-        'hist_bins': [14, 12, 12],
-        'hog_pixels_per_cell': (8, 8),
-        'hog_cells_per_block': (2, 2),
-        'hog_orientations': 9
-    }
-    save_dir = os.path.abspath(os.path.join(root, 'src', 'saved_models'))
-    os.makedirs(save_dir, exist_ok=True)
-    jl.dump(feature_config, os.path.join(save_dir, 'feature_config.joblib'))
+    # # important params config
+    # feature_config = {
+    #     'resize': (64, 64),
+    #     'hist_bins': [14, 12, 12],
+    #     'hog_pixels_per_cell': (8, 8),
+    #     'hog_cells_per_block': (2, 2),
+    #     'hog_orientations': 9
+    # }
+    # save_dir = os.path.abspath(os.path.join(root, 'src', 'saved_models'))
+    # os.makedirs(save_dir, exist_ok=True)
+    # jl.dump(feature_config, os.path.join(save_dir, 'feature_config.joblib'))
 
 
 

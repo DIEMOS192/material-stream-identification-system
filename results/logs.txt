@@ -1260,3 +1260,96 @@ Changes/Approach: HOG tweaks
 Number of training samples: 2166, Number of test samples: 542
 K collection results:
 2025-12-17 17:00:12.305993 - Best K=1, Accuracy=0.8524
+Algorithm: K-Nearest Neighbors
+K-collection: {1, 3, 4, 5, 7, 9}
+
+=== Run at 2025-12-17 18:56:15.200025 ===
+Changes/Approach: HOG tweaks
+Number of training samples: 2166, Number of test samples: 542
+K collection results:
+2025-12-17 18:56:32.535123 - Best K=1, Accuracy=0.8524
+Algorithm: K-Nearest Neighbors (Distance-Based Rejection)
+K-collection: {1, 3, 4, 5, 7, 9}
+
+=== Run at 2025-12-17 19:34:20.187257 ===
+Changes/Approach: Manhattan distance rejection with validation threshold tuning
+Train: 1732, Val: 434, Test: 542
+K collection results:
+K=1: Acc=0.8026, Reject=12.36%, Kept_Acc=0.8463, Threshold=19.6815
+K=3: Acc=0.7860, Reject=13.47%, Kept_Acc=0.8209, Threshold=20.1244
+K=4: Acc=0.8044, Reject=13.84%, Kept_Acc=0.8415, Threshold=20.2368
+K=5: Acc=0.7934, Reject=14.39%, Kept_Acc=0.8233, Threshold=20.3241
+K=7: Acc=0.7694, Reject=14.76%, Kept_Acc=0.8074, Threshold=20.5432
+K=9: Acc=0.7675, Reject=15.13%, Kept_Acc=0.7957, Threshold=20.7318
+2025-12-17 19:34:38.829915 - Best K=4, Accuracy=0.8044
+
+=== Run at 2025-12-17 19:37:49.265440 ===
+Changes/Approach: kernel SVM
+Number of training samples: 2166, Number of test samples: 542
+Accuracy: 0.8616
+
+=== Run at 2025-12-17 19:51:25.246341 ===
+Changes/Approach: SVM with Decision Function Rejection Mechanism
+Training: 1732, Validation: 434, Test: 542
+Overall Accuracy: 0.7509
+Rejection Rate: 14.39%
+Kept Accuracy: 0.8772
+Threshold: 5.2151
+
+=== Run at 2025-12-17 23:32:42.653107 ===
+Changes/Approach: SVM with Decision Function Rejection Mechanism
+Training: 1732, Validation: 434, Test: 542
+Overall Accuracy: 0.7509
+Rejection Rate: 14.39%
+Kept Accuracy: 0.8772
+Threshold: 5.2151
+Algorithm: K-Nearest Neighbors (Distance-Based Rejection)
+K-collection: {1, 3, 4, 5, 7, 9}
+
+=== Run at 2025-12-17 23:33:43.846267 ===
+Changes/Approach: Manhattan distance rejection with validation threshold
+Train: 1732, Val: 434, Test: 542
+K collection results:
+Algorithm: K-Nearest Neighbors (Distance-Based Rejection)
+K-collection: {1, 3, 4, 5, 7, 9}
+
+=== Run at 2025-12-17 23:34:01.854265 ===
+Changes/Approach: Manhattan distance rejection with validation threshold
+Train: 1732, Val: 434, Test: 542
+K collection results:
+Algorithm: K-Nearest Neighbors (Distance-Based Rejection)
+K-collection: {1, 3, 4, 5, 7, 9}
+
+=== Run at 2025-12-17 23:36:31.259574 ===
+Changes/Approach: Manhattan distance rejection with validation threshold
+Train: 1732, Val: 434, Test: 542
+K collection results:
+Algorithm: K-Nearest Neighbors (Distance-Based Rejection)
+K-collection: {1, 3, 4, 5, 7, 9}
+
+=== Run at 2025-12-17 23:39:21.844262 ===
+Changes/Approach: Manhattan distance rejection with validation threshold
+Train: 1732, Val: 434, Test: 542
+K collection results:
+K=1: Acc=0.8026, Reject=12.36%, Kept_Acc=0.8463, Threshold=19.6815
+K=3: Acc=0.7860, Reject=13.47%, Kept_Acc=0.8209, Threshold=20.1244
+K=4: Acc=0.8044, Reject=13.84%, Kept_Acc=0.8415, Threshold=20.2368
+K=5: Acc=0.7934, Reject=14.39%, Kept_Acc=0.8233, Threshold=20.3241
+K=7: Acc=0.7694, Reject=14.76%, Kept_Acc=0.8074, Threshold=20.5432
+K=9: Acc=0.7675, Reject=15.13%, Kept_Acc=0.7957, Threshold=20.7318
+2025-12-17 23:39:39.537986 - Best K=4, Accuracy=0.8044
+Algorithm: K-Nearest Neighbors (Distance-Based Rejection)
+K-collection: {1, 3, 4, 5, 6, 7, 9}
+
+=== Run at 2025-12-17 23:40:37.956190 ===
+Changes/Approach: Manhattan distance rejection with validation threshold
+Train: 1732, Val: 434, Test: 542
+K collection results:
+K=1: Acc=0.8026, Reject=12.36%, Kept_Acc=0.8463, Threshold=19.6815
+K=3: Acc=0.7860, Reject=13.47%, Kept_Acc=0.8209, Threshold=20.1244
+K=4: Acc=0.8044, Reject=13.84%, Kept_Acc=0.8415, Threshold=20.2368
+K=5: Acc=0.7934, Reject=14.39%, Kept_Acc=0.8233, Threshold=20.3241
+K=6: Acc=0.7768, Reject=14.76%, Kept_Acc=0.8117, Threshold=20.4260
+K=7: Acc=0.7694, Reject=14.76%, Kept_Acc=0.8074, Threshold=20.5432
+K=9: Acc=0.7675, Reject=15.13%, Kept_Acc=0.7957, Threshold=20.7318
+2025-12-17 23:40:59.286983 - Best K=4, Accuracy=0.8044
