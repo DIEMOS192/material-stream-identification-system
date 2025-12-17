@@ -1,7 +1,7 @@
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.preprocessing import StandardScaler, Normalizer
 from sklearn.model_selection import train_test_split
-from sklearn.svm import LinearSVC, SVC
+from sklearn.svm import  SVC
 import numpy as np
 import random
 from datetime import datetime
@@ -9,12 +9,15 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils import get_full_training_test_data, get_train_test_data_size
-from sklearn.decomposition import PCA
+import joblib as jl
 
 def main():
     cache_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..','data','cache'))
+    save_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..','saved_models'))
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
     X_cached = os.path.join(cache_dir, 'X_svm.npy')
     y_cached =  os.path.join(cache_dir, 'y_svm.npy')
 
@@ -25,6 +28,7 @@ def main():
     if(os.path.exists(X_cached) and os.path.exists(y_cached)):
         X = np.load(X_cached)
         y =  np.load(y_cached)
+        label_map = jl.load(os.path.join(cache_dir, 'svm_label_map.joblib'))
     else:
         full_data = get_full_training_test_data()
         X, y = [], []
@@ -37,6 +41,9 @@ def main():
             for feature in features:
                 X.append(feature)
                 y.append(label_map[label])
+        
+        jl.dump(label_map, os.path.join(cache_dir, 'svm_label_map.joblib'))
+
         X = np.array(X)
         y = np.array(y)
         np.save(X_cached, X)
@@ -50,8 +57,13 @@ def main():
     X_test = scaler.transform(X_test)
     X_test = norm.transform(X_test)
 
+    jl.dump(scaler, os.path.join(save_dir, 'svm_scaler.joblib'))
+    jl.dump(norm, os.path.join(save_dir, 'svm_normalizer.joblib'))
+    jl.dump(label_map, os.path.join(save_dir, 'svm_label_map.joblib'))
+
     svm_model = SVC(kernel='rbf', C=10.0, gamma='scale', random_state=42)
     svm_model.fit(X_train, y_train)
+    jl.dump(svm_model, os.path.join(save_dir, 'svm_model.joblib'))
     y_pred = svm_model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
     class_report = classification_report(y_test, y_pred)

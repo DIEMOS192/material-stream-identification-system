@@ -9,11 +9,15 @@ import os
 from datetime import datetime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils import get_full_training_test_data
+import joblib as jl
 
 def main():
     cache_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..','data','cache'))
+    save_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..','saved_models'))
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
     X_cached = os.path.join(cache_dir, 'X_knn.npy')
     y_cached =  os.path.join(cache_dir, 'y_knn.npy')
 
@@ -24,6 +28,7 @@ def main():
     if(os.path.exists(X_cached) and os.path.exists(y_cached)):
         X = np.load(X_cached)
         y =  np.load(y_cached)
+        label_map = jl.load(os.path.join(cache_dir, 'knn_label_map.joblib'))
     else:
         full_data = get_full_training_test_data()
         X, y = [], []
@@ -41,6 +46,7 @@ def main():
         np.save(X_cached, X)
         np.save(y_cached, y)
         assert X.shape[0] == y.shape[0], "Mismatch between number of samples and labels"
+        jl.dump(label_map, os.path.join(cache_dir, 'knn_label_map.joblib'))
 
     X_train, X_test, y_train, y_test = \
         train_test_split(X, y, train_size=0.8, random_state=42, stratify=y)
@@ -48,6 +54,9 @@ def main():
     norm = Normalizer()
     X_train = norm.fit_transform(X_train)
     X_test = norm.transform(X_test)
+
+    jl.dump(norm, os.path.join(save_dir, 'knn_normalizer.joblib'))
+    jl.dump(label_map, os.path.join(save_dir, 'knn_label_map.joblib'))
 
     K_values = [1, 3, 4, 5, 7, 9]
     best_k = 1
@@ -89,6 +98,9 @@ def main():
         knn_model = KNeighborsClassifier(n_neighbors=k, metric='manhattan', \
                                             weights='distance')
         knn_model.fit(X_train, y_train)
+
+        jl.dump(knn_model, os.path.join(save_dir, f'knn_model_k{k}.joblib'))
+
         y_pred = knn_model.predict(X_test)
         accuracy = accuracy_score(y_test, y_pred)
         conf_matrix = confusion_matrix(y_test, y_pred)
