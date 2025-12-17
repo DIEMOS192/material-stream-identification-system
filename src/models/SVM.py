@@ -1,5 +1,5 @@
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, Normalizer
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC, SVC
 import numpy as np
@@ -43,12 +43,14 @@ def main():
         np.save(y_cached, y)
     X_train, X_test, y_train, y_test = \
         train_test_split(X, y, train_size=0.8, random_state=42, stratify=y)
-    # norm = Normalizer()
+    norm = Normalizer()
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
+    X_train = norm.fit_transform(X_train)
     X_test = scaler.transform(X_test)
+    X_test = norm.transform(X_test)
 
-    svm_model = SVC(kernel='rbf', C=10.0, gamma='scale')
+    svm_model = SVC(kernel='rbf', C=10.0, gamma='scale', random_state=42)
     svm_model.fit(X_train, y_train)
     y_pred = svm_model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)

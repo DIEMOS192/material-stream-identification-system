@@ -87,7 +87,7 @@ def main():
     with open(accuracy_file, 'w', newline='') as f:
         f.write(f"Timestamp,K,Accuracy\n")
     for k in K_values:
-        knn_model = KNeighborsClassifier(n_neighbors=k, metric='cosine', \
+        knn_model = KNeighborsClassifier(n_neighbors=k, metric='manhattan', \
                                             weights='distance')
         knn_model.fit(X_train, y_train)
         y_pred = knn_model.predict(X_test)

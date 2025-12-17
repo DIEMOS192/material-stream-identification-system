@@ -79,10 +79,23 @@ def clear_outdated_train_test_data():
             if os.path.isfile(file_path):
                 os.remove(file_path)
      
+def clear_aug():
+    aug_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'augmented'))
+    if not os.path.isdir(aug_dir):
+        return
+    for category in os.listdir(aug_dir):
+        category_path = os.path.join(aug_dir, category)
+        if not os.path.isdir(category_path):
+            continue
 
+        for entry in os.listdir(category_path):
+            entry_path = os.path.join(category_path, entry)
+            if os.path.isfile(entry_path):
+                os.remove(entry_path)
 def are_all_training_data_jpg()->bool:
     res:bool = True
-    dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'raw'))
+    dir = os.path.abspath(os.path.join(os.path.dirname(__file__), \
+                                       '..', 'data', 'raw'))
     for folder in os.listdir(dir):
         folder_path = os.path.join(dir, folder)
         if os.path.isdir(folder_path):
@@ -104,7 +117,7 @@ def get_max_data_folder()->int:
 
 
 if __name__ == "__main__":
-    # print(are_all_training_data_jpg())
+    print(are_all_training_data_jpg())
     parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'raw'))
     for category in sorted(os.listdir(parent_dir)):
         category_path = os.path.join(parent_dir, category)
@@ -112,3 +125,5 @@ if __name__ == "__main__":
             size = calculate_training_data_size(category)
             print(f"Category: {category}, Number of images: {size}")
     print("Max data folder size:", get_max_data_folder())
+    clear_outdated_train_test_data()
+    clear_aug()

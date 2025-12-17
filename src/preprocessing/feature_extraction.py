@@ -28,7 +28,7 @@ class FeatureExtractor:
     def extract_hog(self, image):
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         features = hog(gray, pixels_per_cell=(16, 16),\
-                        cells_per_block=(3, 3),
+                        cells_per_block=(2, 2),
                         orientations=9,
                         block_norm='L2-Hys',
                         visualize=False)
@@ -64,14 +64,15 @@ def main():
 
             count = 1
             for  image in images:
-                image = cv2.resize(image, (128, 128))
+                image = cv2.resize(image, (64, 64))
                 histogram = FeatureExtractor().extract_color_histogram(image)
-                # histogram = histogram/np.linalg.norm(histogram)
+                histogram = histogram/np.linalg.norm(histogram)
 
                 hog = FeatureExtractor().extract_hog(image)
-                # hog = hog/np.linalg.norm(hog)
+                hog = hog/np.linalg.norm(hog)
 
                 histogram_hog = np.concatenate((histogram, hog))
+                histogram_hog = histogram_hog/np.linalg.norm(histogram_hog)
 
                 vector_length = histogram_hog.shape[0]
                 np.save(os.path.join(category_save_folder, f"{category}_{data_from}_histogram_hog_{count}.npy"), histogram_hog)
