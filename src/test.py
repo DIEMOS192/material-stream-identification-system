@@ -218,13 +218,10 @@ def predict(dataFilePath, bestModelPath, add_augmentation: bool = False):
         for dist in distances[0]:
             is_rejected.append(dist < threshold)
         if all(is_rejected):
-            predicted_class = "unknown"
+            predicted_class = -1  # unknown/rejected
         else:
             pred = best_model.predict(normalized)[0]
-            renamed_label_map = {val:key for key, val in label_map.items()}
-            predicted_class = renamed_label_map[pred]
-            if predicted_class is None:
-                predicted_class = "unknown"
+            predicted_class = pred
         predictions.append(predicted_class)
 
     return predictions
@@ -249,4 +246,6 @@ if __name__ == "__main__":
     # as this will at least increase the sample size by 20 images
     # test data folder is assumed to be in ../data and named 'samples'
     # adjust accordingly if different and the code should run fine
-    main(add_augmentation =True)
+
+    # labels as IDs were stated in classroom.
+    main(add_augmentation)
