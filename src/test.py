@@ -184,7 +184,7 @@ def predict(dataFilePath, bestModelPath, add_augmentation: bool = False):
         image = cv2.imread(img_path)
         images.append((image_file, image))
 
-    # augmentation (optional)
+    # augmentation (if enabled)
     if add_augmentation:
         aug_data_folder = util.Augmentor(dataFilePath)
         for image_file in os.listdir(aug_data_folder):
@@ -247,4 +247,6 @@ if __name__ == "__main__":
     add_augmentation:bool = False
     # please set it to true if you want additional data augmentation
     # as this will at least increase the sample size by 20 images
+    # test data folder is assumed to be in ../data and named 'samples'
+    # adjust accordingly if different and the code should run fine
     main(add_augmentation =True)
