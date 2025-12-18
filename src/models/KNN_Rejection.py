@@ -12,17 +12,11 @@ from utils import get_full_training_test_data
 import joblib as jl
 
 
-def rejection_mechanism_distance(distances, threshold, k=None):
-    """
-    as discussed in report, the higher the mean distance to k-neighbors,
-    the more likely the sample is negative or outlier, thus rejected.
-    """
-    mean_dist = np.mean(distances)
-    return mean_dist > threshold
+
 
 def main():
     cache_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..','data','cache'))
-    save_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..','saved_models'))
+    save_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'saved_models'))
     if not os.path.exists(cache_dir):
         os.makedirs(cache_dir)
     if not os.path.exists(save_dir):
@@ -113,7 +107,10 @@ def main():
         knn_model.fit(X_train, y_train)
         
         val_distances, degenerates = knn_model.kneighbors(X_val)
-        val_mean_distances = np.mean(val_distances, axis=1)
+        val_mean_distances = []
+        for dist in val_distances:
+            val_mean_distances.append(sum(dist) / k)
+        val_mean_distances = np.array(val_mean_distances)
         
         thresholds = np.percentile(val_mean_distances, [50, 60, 70, 75, 80, 85, 90, 95])
         best_threshold = None
@@ -122,13 +119,20 @@ def main():
         y_val_pred = knn_model.predict(X_val)
         
         for threshold in thresholds:
-            is_rejected = val_mean_distances > threshold
-            is_kept = ~is_rejected
-            if not np.sum(is_kept):
+            is_rejected = np.array([val > threshold for val in val_mean_distances])
+            is_kept = np.array([not r for r in is_rejected])
+            if True not in is_kept:
                 continue
+
+            y_val_kept =[]
+            y_val_pred_kept = []
+            for i in range(len(y_val)):
+                if is_kept[i]:
+                    y_val_kept.append(y_val[i])
+                    y_val_pred_kept.append(y_val_pred[i])
             
-            kept_acc = accuracy_score(y_val[is_kept], y_val_pred[is_kept])
-            rejection_rate = 1 - np.mean(is_kept)
+            kept_acc = accuracy_score(y_val_kept, y_val_pred_kept)
+            rejection_rate = 1 - sum(is_kept) / len(y_val)
             
             # setting a rejection limit for reasonable evaluation
             if rejection_rate < 0.2:
@@ -145,15 +149,26 @@ def main():
         
         
         test_distances, degenerates = knn_model.kneighbors(X_test)
-        test_mean_distances = np.mean(test_distances, axis=1)
-        test_is_kept = test_mean_distances <= best_threshold
+
+        test_mean_distances = []
+        for dist in test_distances:
+            test_mean_distances.append(sum(dist) / k)
+        test_mean_distances = np.array(test_mean_distances)
+
+        test_is_kept = np.array([val <= best_threshold for val in test_mean_distances])
         
         y_pred = knn_model.predict(X_test)
         overall_accuracy = accuracy_score(y_test, y_pred)
-        rejection_rate = 1 - np.mean(test_is_kept)
+        rejection_rate = 1 - sum(test_is_kept) / len(y_test)
         
-        if np.sum(test_is_kept) > 0:
-            kept_accuracy = accuracy_score(y_test[test_is_kept], y_pred[test_is_kept])
+        if True in test_is_kept:
+            y_test_kept = []
+            y_pred_kept = []
+            for i in range(len(y_test)):
+                if test_is_kept[i]:
+                    y_test_kept.append(y_test[i])
+                    y_pred_kept.append(y_pred[i])
+            kept_accuracy = accuracy_score(y_test_kept, y_pred_kept)
         else:
             kept_accuracy = 0.0
         

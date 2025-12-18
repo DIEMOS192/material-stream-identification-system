@@ -1,12 +1,7 @@
 import os
 import cv2
-import random
 import numpy as np
 from sys import path as sys_path
-import joblib as jl
-
-
-from sklearn.preprocessing import Normalizer
 sys_path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils import clear_outdated_train_test_data
 from skimage.feature import hog
@@ -20,7 +15,7 @@ class FeatureExtractor:
         return image.flatten()
     
     def extract_color_histogram(self, image):
-        pixel_bins = [14, 12, 12]  # Changed from (8, 8, 8)
+        pixel_bins = [14, 12, 12]  
         image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         hist = cv2.calcHist([image], [0, 1, 2], None, pixel_bins,
                             [0, 180, 0, 256, 0, 256])
@@ -28,10 +23,10 @@ class FeatureExtractor:
         return hist
 
     def extract_hog(self, image):
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # changed from 16, 16 # main place to edit for balancing KNN nad svm
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 
         features = hog(gray, pixels_per_cell=(8, 8), 
-                        cells_per_block=(2, 2), # was 2, 2
-                        orientations=9, # was 9
+                        cells_per_block=(2, 2), 
+                        orientations=9, 
                         block_norm='L2-Hys',
                         visualize=False)
         return features
@@ -82,20 +77,12 @@ def main():
     print("Feature extraction completed.")
     print("Vector length:", vector_length)
     
-    # # important params config
-    # feature_config = {
-    #     'resize': (64, 64),
-    #     'hist_bins': [14, 12, 12],
-    #     'hog_pixels_per_cell': (8, 8),
-    #     'hog_cells_per_block': (2, 2),
-    #     'hog_orientations': 9
-    # }
-    # save_dir = os.path.abspath(os.path.join(root, 'src', 'saved_models'))
-    # os.makedirs(save_dir, exist_ok=True)
-    # jl.dump(feature_config, os.path.join(save_dir, 'feature_config.joblib'))
+
 
 
 
 if __name__ == "__main__":
+    # this deletes cached features and previous saved models
+    # so run times could be slower but models will always have fresh data
     clear_outdated_train_test_data()
     main()

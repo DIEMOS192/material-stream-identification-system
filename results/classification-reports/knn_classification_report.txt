@@ -1374,3 +1374,23 @@ Distance-based rejection mechanism (for negative class detection)
 
 === Run at 2025-12-17 23:40:37.956736 ===
 Distance-based rejection mechanism (for negative class detection)
+
+=== Run at 2025-12-18 15:30:40.718557 ===
+Distance-based rejection mechanism (for negative class detection)
+
+=== Run at 2025-12-18 17:21:41.146966 ===
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        97
+           1       1.00      1.00      1.00        96
+           2       1.00      1.00      1.00        97
+           3       1.00      1.00      1.00        94
+           4       1.00      1.00      1.00        94
+           5       1.00      1.00      1.00        64
+
+    accuracy                           1.00       542
+   macro avg       1.00      1.00      1.00       542
+weighted avg       1.00      1.00      1.00       542
+
+=== Run at 2025-12-18 17:22:31.975390 ===
+Distance-based rejection mechanism (for negative class detection)

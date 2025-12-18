@@ -61,6 +61,8 @@ def get_train_test_data_size()->tuple[int, int]:
     return train_size, test_size
             
 
+# this clears cached features and previous saved models
+# so models do not use outdated data
 def clear_outdated_train_test_data():
     features_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data',\
                                        'features'))
@@ -76,6 +78,14 @@ def clear_outdated_train_test_data():
     if os.path.exists(cache_dir):
         for cache_file in os.listdir(cache_dir):
             file_path = os.path.join(cache_dir, cache_file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+
+    # clear saved models
+    saved_models_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'models', 'saved_models'))
+    if os.path.exists(saved_models_dir):
+        for model_file in os.listdir(saved_models_dir):
+            file_path = os.path.join(saved_models_dir, model_file)
             if os.path.isfile(file_path):
                 os.remove(file_path)
      

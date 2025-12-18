@@ -1,13 +1,13 @@
-2025-12-17 23:40:44.955836 - K=3
+2025-12-18 17:22:38.520824 - K=3
 Confusion Matrix:
-[[80  4  2  0  0 11]
- [ 0 73  5  2 13  3]
- [ 1  9 68  2 10  7]
- [ 2  6  2 77  5  2]
- [ 0 10  7  3 70  4]
- [ 2  2  1  0  1 58]]
+[[85  4  1  0  0  7]
+ [ 0 75  5  2 12  2]
+ [ 2  8 71  2 10  4]
+ [ 2  5  2 78  4  3]
+ [ 0 10  5  2 74  3]
+ [ 1  1  1  0  0 61]]
 
-Overall Accuracy: 0.7860
-Rejection Rate: 13.47%
-Accuracy on Kept Samples: 0.8209
-Rejection Threshold (mean manhattan distance): 20.1244
+Overall Accuracy: 0.8192
+Rejection Rate: 13.28%
+Accuracy on Kept Samples: 0.8532
+Rejection Threshold (mean manhattan distance): 20.1090

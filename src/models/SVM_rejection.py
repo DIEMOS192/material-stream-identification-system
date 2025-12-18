@@ -9,15 +9,8 @@ import sys
 import os
 import joblib as jl
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from utils import get_full_training_test_data, get_train_test_data_size
+from utils import get_full_training_test_data
 
-def rejection_mechanism_decision(max_decision_value, threshold):
-    """
-    as discussed in report, the higher the max decision function value,
-    the far the sample is from the decision boundary, thus accepted.
-    oppoisite for rejection.
-    """
-    return max_decision_value < threshold
 
 def main():
     cache_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..','data','cache'))
@@ -87,25 +80,34 @@ def main():
     best_threshold = None
     best_score = -1
     
-    print("\n=== choosing best threshold ===")
+    print("\n--- choosing best threshold ---")
     for thresh in thresholds:
         threshold = np.percentile(val_max_decisions, thresh)
-        
-        # Evaluate on validation set
-        is_rejected = val_max_decisions < threshold
-        is_kept = ~is_rejected
-        
-        if not np.sum(is_kept):
+
+
+        is_rejected = np.array([v < threshold for v in val_max_decisions])
+        is_kept = np.array([not r for r in is_rejected])
+
+        if True not in is_kept:
             continue
             
-        y_val_kept = y_val[is_kept]
-        val_decision_kept = val_decision_values[is_kept]
-        y_val_pred = svm_model.predict(X_val[is_kept])
+        y_val_kept =[]
+        X_val_kept =[]
+
+        for i in range(len(y_val)):
+            if is_kept[i]:
+                y_val_kept.append(y_val[i])
+                X_val_kept.append(X_val[i])
+
+        y_val_kept = np.array(y_val_kept)
+        X_val_kept = np.array(X_val_kept)
+
+        y_val_pred = svm_model.predict(X_val_kept)
         
         val_kept_acc = accuracy_score(y_val_kept, y_val_pred)
-        rejection_rate = np.sum(is_rejected) / len(y_val)
+        rejection_rate = sum(is_rejected) / len(y_val)
         
-        # Balanced score: prioritize kept accuracy but penalize high rejection
+
         if rejection_rate < 0.20:
             score = val_kept_acc
         else:
@@ -123,18 +125,30 @@ def main():
     test_decision_values = svm_model.decision_function(X_test)
     test_max_decisions = np.max(test_decision_values, axis=1)
     
-    is_rejected = rejection_mechanism_decision(test_max_decisions, best_threshold)
-    is_kept = ~is_rejected
+    is_rejected = np.array([v < best_threshold for v in test_max_decisions])
+    is_kept = np.array([not r for r in is_rejected])
+
     
-    # rejected marked as -1 (wrong)
+    
     y_pred_all = svm_model.predict(X_test)
-    y_pred_all[is_rejected] = -1  
+
+    #flag rejected
+    for i in range(len(y_pred_all)):
+        if is_rejected[i]:
+            y_pred_all[i] = -1  
+
+    # rejected samples labeled with -1 to symbolize wrong prediction
     overall_accuracy = accuracy_score(y_test, y_pred_all)
-    
-    # Kept accuracy 
-    if np.sum(is_kept) > 0:
-        y_test_kept = y_test[is_kept]
-        y_pred_kept = svm_model.predict(X_test[is_kept])
+
+
+    if True in is_kept:
+        y_test_kept = []
+        X_test_kept = []
+        for i in range(len(y_test)):
+            if is_kept[i]:
+                y_test_kept.append(y_test[i])
+                X_test_kept.append(X_test[i])
+        y_pred_kept = svm_model.predict(np.array(X_test_kept))
         kept_accuracy = accuracy_score(y_test_kept, y_pred_kept)
         class_report = classification_report(y_test_kept, y_pred_kept)
         conf_matrix = confusion_matrix(y_test_kept, y_pred_kept)
@@ -143,7 +157,8 @@ def main():
         class_report = "No samples kept"
         conf_matrix = np.array([[]])
     
-    rejection_rate = np.sum(is_rejected) / len(y_test)
+    rejection_rate = sum(is_rejected) / len(y_test)
+    
     
     print(f"\n{'='*60}")
     print(f"SVM with Rejection Mechanism (RBF kernel, C=10.0)")

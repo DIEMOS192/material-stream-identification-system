@@ -135,6 +135,13 @@ rejection mechanism was the last challenge we faced in this project
 as joblib and openCV make saving models, integrating to real world app
 very straightforward, we are happy with our final results.
 
+
+## Final Minute Tweaks:
+we noticed that during augmentation, we can set border mode for scaling
+the same as for rotation to avoid black borders,
+this enhanced results slightly so we kept it in final code.
+
+
 ## Note:
 
 Most of our detailed results are documented in the following files:

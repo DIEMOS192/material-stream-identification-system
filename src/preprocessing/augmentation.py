@@ -21,17 +21,18 @@ class GeometricAugmentor:
         return rotated
         
         
-    def flip(self, image, hr_vr = 0.5): #horizontal or vertical
+    def flip(self, image, hr_vr = 0.5): 
         return cv2.flip(image, 1) if random.random() < hr_vr else \
         cv2.flip(image, 0)
         
-    def scale(self, image, scaling=None):#0.9-1.1x
+    def scale(self, image, scaling=None):
         if scaling is None or scaling < 0.9 or scaling > 1.1:
             scaling = random.uniform(0.9, 1.1)
         (height, width, degenerate) = image.shape
         center = (width // 2, height // 2)
         rotation_matrix = cv2.getRotationMatrix2D(center, 0, scaling)
-        scaled = cv2.warpAffine(image, rotation_matrix, (width, height))
+        scaled = cv2.warpAffine(image, rotation_matrix, (width, height), \
+                                borderMode=cv2.BORDER_REFLECT_101)
         return scaled
     def random_crop(self, image, pos:str=None, size:float=None):
         if pos is None or pos not in ['tl', 'tr', 'bl', 'br', 'c']:
@@ -65,19 +66,19 @@ class GeometricAugmentor:
 
 class PhotometricAugmentor:
 
-    def adjust_brightness(self, image, constant = 30): # 30 or -30
+    def adjust_brightness(self, image, constant = 30): 
         if constant not in [-30, 30]:
             constant = random.choice([-30, 30])
         img = cv2.convertScaleAbs(image, alpha=1, beta=constant)
         return img
-    def adjust_contrast(self, image, constant = None): # between 0.8 and 1.2
+    def adjust_contrast(self, image, constant = None): 
         if constant is None or constant < 0.8 or constant > 1.2:
             constant = random.uniform(0.8, 1.2)
         img = cv2.convertScaleAbs(image, alpha=constant, beta=0)
         return img
     
 
-    def add_noise(self, image, noise = None): # from 5 to 15 # should we keep it?
+    def add_noise(self, image, noise = None): 
         if noise is None or noise < 5 or noise > 15:
             noise = random.randint(5, 15)
         gauss = np.random.normal(0, noise, image.shape)
