@@ -22,3 +22,6 @@ project/features
 
 raw_features
 
+# Reproducible cProfile binaries (the benchmark metrics remain versioned)
+benchmarks/results/*.prof
+

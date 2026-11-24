@@ -1,0 +1,25 @@
+{
+  "baseline_tag": "v1.0-before-enhancement",
+  "benchmark_scope": "in-memory per-frame v1 SVM pipeline; image decoding excluded",
+  "frames": 600,
+  "accuracy": 0.6483333333333333,
+  "rejection_rate": 0.2,
+  "fps": 96.14218275122714,
+  "latency_ms": {
+    "preprocess_mean": 1.7760265,
+    "inference_mean": 8.607541166666666,
+    "postprocess_mean": 0.0009835,
+    "total_mean": 10.401261666666667,
+    "total_p50": 10.0801,
+    "total_p95": 15.422289999999974
+  },
+  "environment": {
+    "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.3.5",
+    "opencv": "4.11.0",
+    "scikit_image": "0.25.2",
+    "scikit_learn": "1.8.0",
+    "joblib": "1.5.2"
+  }
+}
