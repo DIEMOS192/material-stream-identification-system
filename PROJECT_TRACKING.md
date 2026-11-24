@@ -108,6 +108,16 @@ Therefore, optimize and verify the duplicate SVM scoring/prediction path before
 spending time on minor Python-loop cleanup. Every optimization must preserve
 the per-image labels in the baseline oracle and re-run the benchmark.
 
+#### Rejected inference experiments
+
+- Selecting `model.classes_[argmax(decision_function)]` instead of calling
+  `SVC.predict` was tested across all 600 frozen frames. It changed 2 labels,
+  so it is not behavior-preserving and must not be used.
+- Replacing the fitted `StandardScaler` and `Normalizer` calls with direct
+  NumPy arithmetic produced no label mismatches, but measured 7.603 ms/frame
+  against 7.509 ms/frame for the fitted transformers (0.9876x speed). It is
+  slower and was rejected.
+
 ### Parity guard
 
 - Added deterministic feature tests and a local SVM integration parity test in
