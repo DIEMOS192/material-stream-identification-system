@@ -78,7 +78,8 @@ Update it after each completed step and commit it with the related work.
 - These figures are the only accepted v1-v2 comparison baseline. Historical
   report figures are not directly comparable because their TA evaluation split
   was never committed or documented.
-- Re-run command: `py -3.14 benchmarks/benchmark.py --profile`
+- Candidate re-run command:
+  `py -3.14 benchmarks/benchmark.py --profile --output benchmarks/results/<candidate>.json`
 - The `--profile` switch writes an ignored `.prof` file. The versioned JSON and
   CSV files are the durable benchmark record.
 
@@ -131,6 +132,24 @@ the per-image labels in the baseline oracle and re-run the benchmark.
   tools; pytest will collect the same tests once it is added to the pinned
   development dependencies and CI environment.
 
+### Deployed-pipeline refactor
+
+- Added `src/inference/pipeline.py` with typed `MaterialPrediction` and
+  `SVMFrameClassifier` objects. The classifier loads serialized artifacts once,
+  constructs the inverse label map once, and owns the single-frame feature,
+  rejection, and label-decoding path.
+- Refactored `src/app/app.py` to delegate to this pipeline. The original TA
+  batch-assessment script remains untouched because it is a separate legacy
+  entry point with its own output contract.
+- Changed the parity integration test to invoke the production classifier
+  rather than a copied test implementation. All 600 frozen labels still match.
+- Protected `benchmarks/results/v1_baseline.json` from accidental replacement.
+  New candidate runs must supply `--output`; measured candidate timings are not
+  committed as v1-v2 gains unless they correspond to an actual change.
+- A post-refactor check reported 109.91 FPS but is not a valid improvement
+  claim because the benchmark itself still exercises the frozen v1 path and
+  Windows timing varied between otherwise identical runs.
+
 ## Current constraints and decisions
 
 - Preserve behavior. Before and after every optimization, compare outputs with
@@ -159,6 +178,6 @@ the per-image labels in the baseline oracle and re-run the benchmark.
 1. Run `git branch --show-current` and confirm `v2-refactor`.
 2. Review `git status --short` before staging anything; the pre-existing dirty
    changes are intentional user state until explicitly resolved.
-3. Run `py -3.14 benchmarks/benchmark.py --profile` before changing pipeline
-   behavior and save the new output only if it replaces a deliberate baseline.
+3. Run `py -3.14 benchmarks/benchmark.py --profile --output
+   benchmarks/results/<candidate>.json` before changing pipeline behavior.
 4. Read this file and the latest commit before starting the next task.

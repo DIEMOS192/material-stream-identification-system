@@ -42,6 +42,7 @@ from preprocessing.feature_extraction import FeatureExtractor  # noqa: E402
 
 BASELINE_TAG = "v1.0-before-enhancement"
 CLASSES = ("cardboard", "glass", "metal", "paper", "plastic", "trash")
+BASELINE_RESULTS_PATH = REPOSITORY_ROOT / "benchmarks" / "results" / "v1_baseline.json"
 
 
 @dataclass(frozen=True)
@@ -250,16 +251,27 @@ def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, default=REPOSITORY_ROOT / "dataset")
     parser.add_argument("--manifest", type=Path, default=REPOSITORY_ROOT / "benchmarks" / "fixtures" / "v1_eval_manifest.csv")
-    parser.add_argument("--output", type=Path, default=REPOSITORY_ROOT / "benchmarks" / "results" / "v1_baseline.json")
+    parser.add_argument("--output", type=Path, default=BASELINE_RESULTS_PATH)
     parser.add_argument("--samples-per-class", type=int, default=100)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--rebuild-manifest", action="store_true")
+    parser.add_argument(
+        "--overwrite-baseline",
+        action="store_true",
+        help="Allow replacement of the committed v1 baseline metrics file.",
+    )
     parser.add_argument("--profile", action="store_true", help="Save cProfile data next to the results JSON.")
     return parser.parse_args()
 
 
 def main() -> None:
     arguments = parse_arguments()
+    if arguments.output == BASELINE_RESULTS_PATH and arguments.output.exists() and not arguments.overwrite_baseline:
+        raise SystemExit(
+            "Refusing to overwrite the committed v1 baseline. "
+            "Use --output benchmarks/results/<candidate>.json for a new run, "
+            "or --overwrite-baseline to replace the baseline deliberately."
+        )
     if arguments.rebuild_manifest or not arguments.manifest.exists():
         manifest = create_manifest(arguments.dataset, arguments.samples_per_class, arguments.seed)
         write_manifest(manifest, arguments.manifest)

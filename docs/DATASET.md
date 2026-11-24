@@ -29,12 +29,13 @@ on its recorded raw training images.
 Run the baseline benchmark with:
 
 ```powershell
-py -3.14 benchmarks/benchmark.py --profile
+py -3.14 benchmarks/benchmark.py --profile --output benchmarks/results/candidate.json
 ```
 
 The benchmark validates that all manifest paths are readable before measuring
 the in-memory frame pipeline. It does not measure disk decoding as webcam
-latency.
+latency. The committed v1 result cannot be overwritten accidentally; pass an
+explicit candidate output path for later runs.
 
 ## Provenance and licensing status
 
