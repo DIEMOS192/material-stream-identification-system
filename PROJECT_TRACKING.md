@@ -82,6 +82,18 @@ Update it after each completed step and commit it with the related work.
 - The `--profile` switch writes an ignored `.prof` file. The versioned JSON and
   CSV files are the durable benchmark record.
 
+### Dataset consistency documentation
+
+- Added `docs/DATASET.md` to define `dataset/` as the local-only six-class
+  layout expected by the v2 baseline, document the benchmark split, and prevent
+  accidental data commits.
+- No dataset source, provider URL, or license was recoverable from the tracked
+  files or JPEG metadata. This is explicitly a provenance gap, not an inferred
+  claim; the owner must supply it before public redistribution or licensing.
+- The v1 tag preserves the historical raw/augmented data. The current v2
+  branch deliberately leaves the pre-existing deletion state unstaged until a
+  dedicated data-cleanup decision is made.
+
 ### Measured profile findings
 
 `cProfile` on the baseline run recorded 7.051 seconds across 600 frames plus a
