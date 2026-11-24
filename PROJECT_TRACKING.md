@@ -108,6 +108,19 @@ Therefore, optimize and verify the duplicate SVM scoring/prediction path before
 spending time on minor Python-loop cleanup. Every optimization must preserve
 the per-image labels in the baseline oracle and re-run the benchmark.
 
+### Parity guard
+
+- Added deterministic feature tests and a local SVM integration parity test in
+  `tests/`, plus `pytest.ini` for future pytest/CI collection.
+- The integration test replays every image in the frozen 600-image manifest
+  through the v1 webcam decision path and compares it with the saved oracle.
+- Verification command run successfully:
+  `py -3.14 -m unittest discover -s tests -v`.
+  Result: 4 tests passed in 7.720 seconds, including all 600 output checks.
+- The tests use `unittest` so they can run without installing extra global
+  tools; pytest will collect the same tests once it is added to the pinned
+  development dependencies and CI environment.
+
 ## Current constraints and decisions
 
 - Preserve behavior. Before and after every optimization, compare outputs with
@@ -125,13 +138,10 @@ the per-image labels in the baseline oracle and re-run the benchmark.
 
 ## Next work, in order
 
-1. Resolve repository/data consistency: decide the canonical documented dataset
-   location, document its source/license, and deliberately handle the pre-v2
-   `data/` deletions without absorbing unrelated user changes.
-2. Add output-parity tests around preprocessing and the deployed SVM pipeline.
-3. Implement only the highest-confidence measured inference optimization, then
+1. Confirm the local parity tests pass against the frozen 600-image oracle.
+2. Implement only the highest-confidence measured inference optimization, then
    compare its output oracle and rerun the benchmark before committing.
-4. Continue with package layout, configuration, pinned dependencies, training
+3. Continue with package layout, configuration, pinned dependencies, training
    reproducibility, pytest/CI, and README/licensing as planned.
 
 ## Resume checklist
