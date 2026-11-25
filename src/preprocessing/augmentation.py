@@ -21,9 +21,9 @@ class GeometricAugmentor:
         return rotated
         
         
-    def flip(self, image, hr_vr = 0.5): 
-        return cv2.flip(image, 1) if random.random() < hr_vr else \
-        cv2.flip(image, 0)
+    # def flip(self, image, hr_vr = 0.5): 
+    #     return cv2.flip(image, 1) if random.random() < hr_vr else \
+    #     cv2.flip(image, 0)
         
     def scale(self, image, scaling=None):
         if scaling is None or scaling < 0.9 or scaling > 1.1:
@@ -34,29 +34,29 @@ class GeometricAugmentor:
         scaled = cv2.warpAffine(image, rotation_matrix, (width, height), \
                                 borderMode=cv2.BORDER_REFLECT_101)
         return scaled
-    def random_crop(self, image, pos:str=None, size:float=None):
-        if pos is None or pos not in ['tl', 'tr', 'bl', 'br', 'c']:
-            pos = random.choice(['tl', 'tr', 'bl', 'br', 'c'])
-        if size is None or size < 0.5 or size > 0.9:
-            size = random.uniform(0.5, 0.9)
-        new_img = None
-        (height, width, channels) = image.shape
-        new_height = int(height * size)
-        new_width = int(width * size)
-        if pos == 'tl':
-            new_img = image[0:new_height, 0:new_width]
-        elif pos == 'tr':
-            new_img = image[0:new_height, width - new_width:width]
-        elif pos == 'bl':
-            new_img = image[height - new_height:height, 0:new_width]
-        elif pos == 'br':
-            new_img = image[height - new_height:height, width - new_width:width]
-        elif pos == 'c':
-            start_y = (height - new_height) // 2
-            start_x = (width - new_width) // 2
-            new_img = image[start_y:start_y + new_height, start_x:start_x + new_width]
-
-        return new_img
+    # def random_crop(self, image, pos:str=None, size:float=None):
+    #     if pos is None or pos not in ['tl', 'tr', 'bl', 'br', 'c']:
+    #         pos = random.choice(['tl', 'tr', 'bl', 'br', 'c'])
+    #     if size is None or size < 0.5 or size > 0.9:
+    #         size = random.uniform(0.5, 0.9)
+    #     new_img = None
+    #     (height, width, channels) = image.shape
+    #     new_height = int(height * size)
+    #     new_width = int(width * size)
+    #     if pos == 'tl':
+    #         new_img = image[0:new_height, 0:new_width]
+    #     elif pos == 'tr':
+    #         new_img = image[0:new_height, width - new_width:width]
+    #     elif pos == 'bl':
+    #         new_img = image[height - new_height:height, 0:new_width]
+    #     elif pos == 'br':
+    #         new_img = image[height - new_height:height, width - new_width:width]
+    #     elif pos == 'c':
+    #         start_y = (height - new_height) // 2
+    #         start_x = (width - new_width) // 2
+    #         new_img = image[start_y:start_y + new_height, start_x:start_x + new_width]
+        # return new_img
+        
     def random_resize(self, image, factor:float=None):
         if factor is None or factor < 0.8 or factor > 1.2:
             factor = random.uniform(0.8, 1.2)

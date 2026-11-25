@@ -54,6 +54,7 @@ def main():
     # 64% train, 16% validation, 20% test
     X_temp, X_test, y_temp, y_test = \
         train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    
     X_train, X_val, y_train, y_val = \
         train_test_split(X_temp, y_temp, test_size=0.2, random_state=42, stratify=y_temp)
 
@@ -94,8 +95,6 @@ def main():
         class_file.write("Distance-based rejection mechanism (for negative class detection)\n")
 
 
-
-
     
 
    
@@ -121,6 +120,7 @@ def main():
         for threshold in thresholds:
             is_rejected = np.array([val > threshold for val in val_mean_distances])
             is_kept = np.array([not r for r in is_rejected])
+            
             if True not in is_kept:
                 continue
 

@@ -9,7 +9,7 @@ import os
 from datetime import datetime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils import get_full_training_test_data
-import joblib as jl
+
 
 
 def main():

@@ -3,8 +3,7 @@ import cv2
 import os
 import numpy as np
 def read_random_image(directory):
-    """Reads a random image from the specified directory."""
-    images = [img for img in os.listdir(directory) if img.endswith(('.png', '.jpg', '.jpeg'))]
+    images = [img for img in os.listdir(directory) if img.endswith(('.jpg'))]
     if not images:
         raise ValueError("No images found in the specified directory.")
     random_image = random.choice(images)

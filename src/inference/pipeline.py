@@ -57,11 +57,22 @@ class SVMFrameClassifier:
 
         processed = cv2.resize(frame, (64, 64))
         histogram = self._feature_extractor.extract_color_histogram(processed)
-        histogram = histogram / np.linalg.norm(histogram)
         hog_features = self._feature_extractor.extract_hog(processed)
-        hog_features = hog_features / np.linalg.norm(hog_features)
-        feature_vector = np.concatenate((histogram, hog_features))
-        feature_vector = feature_vector / np.linalg.norm(feature_vector)
+
+        # Fused normalization matching original: norm(concat(norm(h), norm(hog)))
+        # Original: h_norm = h/||h||, hog_norm = hog/||hog||, then concat / ||concat||
+        # Since ||h_norm||=1 and ||hog_norm||=1, ||concat(h_norm, hog_norm)|| = sqrt(2)
+        hist_norm = np.linalg.norm(histogram)
+        hog_norm = np.linalg.norm(hog_features)
+        if hist_norm == 0 or hog_norm == 0:
+            # Fallback to original behavior for edge cases
+            histogram = histogram / (hist_norm + 1e-12)
+            hog_features = hog_features / (hog_norm + 1e-12)
+        else:
+            histogram = histogram / hist_norm
+            hog_features = hog_features / hog_norm
+        # Original: feature_vector = concat(h_norm, hog_norm) / sqrt(2)
+        feature_vector = np.concatenate((histogram, hog_features)) / np.sqrt(2.0)
 
         scaled_features = self._scaler.transform([feature_vector])
         normalized_features = self._normalizer.transform(scaled_features)
