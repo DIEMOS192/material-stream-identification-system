@@ -90,15 +90,17 @@ balance between color details and generalisation, finally HOG parameters
 performance between knn and svm(svm actually reached **0.86** before that with small
 vector size but knn was falling behind so we changed to this balanced approach)
 
-finally after all these changes, we reached **0.85+ accuracy** 
+finally after all these changes, we reached **0.85+ accuracy**
 
 ## Random stars of our sucess:
+
 **numpy normalization** after extracting hist, then after hog then again after concatenation, removing any degraded results.
 
 using both **standard scaler and normalizer for svm** played a star role
 which was not expected at all, alghough the same did not help knn
 
 ## Final works & notes:
+
 **linear svm** was better before parameter tuning but proved much worse afterwards
 **rbf svm** proved better after parameter tuning, so we kept it
 then comes the rejection mechanism as our last challenge
@@ -135,12 +137,11 @@ rejection mechanism was the last challenge we faced in this project
 as joblib and openCV make saving models, integrating to real world app
 very straightforward, we are happy with our final results.
 
-
 ## Final Minute Tweaks:
+
 we noticed that during augmentation, we can set border mode for scaling
 the same as for rotation to avoid black borders,
 this enhanced results slightly so we kept it in final code.
-
 
 ## Note:
 
@@ -150,3 +151,115 @@ Most of our detailed results are documented in the following files:
 - `results/accuracy-plots/` - Accuracy CSV files
 - `results/classification-reports/` - Detailed classification metrics
 - `results/confusion-matrices/` - Confusion matrix analysis
+
+---
+
+## Final Evaluation & Model Comparison
+
+### Label Mapping
+
+| ID  |       Class        |
+| :-: | :----------------: |
+|  0  |     Cardboard      |
+|  1  |       Glass        |
+|  2  |       Metal        |
+|  3  |       Paper        |
+|  4  |      Plastic       |
+|  5  |       Trash        |
+| -1  | Unknown (Rejected) |
+
+---
+
+### SVM Results (RBF Kernel, C=10.0)
+
+**Latest Run: 2025-12-18**
+
+| Metric           |  Value |
+| :--------------- | -----: |
+| Overall Accuracy | 78.04% |
+| Rejection Rate   | 11.99% |
+| Kept Accuracy    | 88.68% |
+| Threshold        | 5.2119 |
+
+**Confusion Matrix (Kept Samples Only):**
+
+|               | Cardboard | Glass  | Metal  | Paper  | Plastic | Trash  |
+| :------------ | :-------: | :----: | :----: | :----: | :-----: | :----: |
+| **Cardboard** |  **83**   |   0    |   0    |   1    |    1    |   1    |
+| **Glass**     |     0     | **79** |   5    |   1    |    4    |   2    |
+| **Metal**     |     0     |   10   | **66** |   0    |    5    |   1    |
+| **Paper**     |     0     |   3    |   0    | **76** |    1    |   0    |
+| **Plastic**   |     0     |   9    |   1    |   3    | **67**  |   1    |
+| **Trash**     |     1     |   2    |   1    |   1    |    0    | **52** |
+
+**Analysis:**
+
+- Cardboard has excellent results with minimal confusion
+- Glass and Metal show some confusion 
+- Plastic and Glass also exhibit minor confusion
+- Trash class performs well
+- Overall the model shows satisfying performance
+
+---
+
+### KNN Results (Manhattan Distance, Best K=1)
+
+**Latest Run: 2025-12-18**
+
+| Metric           |   Value |
+| :--------------- | ------: |
+| Overall Accuracy |  82.10% |
+| Rejection Rate   |  12.18% |
+| Kept Accuracy    |  86.34% |
+| Threshold        | 19.6531 |
+
+**Confusion Matrix:**
+
+|               | Cardboard | Glass  | Metal  | Paper  | Plastic | Trash  |
+| :------------ | :-------: | :----: | :----: | :----: | :-----: | :----: |
+| **Cardboard** |  **83**   |   3    |   1    |   3    |    0    |   7    |
+| **Glass**     |     0     | **75** |   7    |   2    |   10    |   2    |
+| **Metal**     |     4     |   5    | **75** |   1    |    9    |   3    |
+| **Paper**     |     2     |   5    |   4    | **79** |    2    |   2    |
+| **Plastic**   |     0     |   10   |   5    |   3    | **73**  |   3    |
+| **Trash**     |     0     |   1    |   1    |   0    |    2    | **60** |
+
+**Analysis:**
+
+- K=1 gave best overall accuracy among tested K values (1, 3, 4, 5, 7, 9)
+- Cardboard and Trash are well-classified
+- Glass-Plastic and Metal-Plastic pairs show confusion
+- Paper is stable too
+- Generally, Higher k values is lower accuracy but this rule is not always true
+- KNN performance is competitive with SVM
+
+---
+
+### SVM vs KNN Trade-offs
+
+| Aspect               | SVM (RBF)  | KNN (K=1)                     |
+| :------------------- | :--------- | :---------------------------- |
+| **Overall Accuracy** | 78.04%     | 82.10%                        |
+| **Kept Accuracy**    | 88.68%     | 86.34%                        |
+| **Rejection Rate**   | 11.99%     | 12.18%                        |
+| **Training Time**    | Slower     | Faster                        |
+| **Inference Time**   | Faster     | Slower (distance computation) |
+| **Memory Usage**     | Model only | Stores all training data      |
+
+**Key Observations:**
+
+- **KNN has higher overall accuracy** but lower accuracy on accepted data
+- **SVM has better kept accuracy** by rejecting uncertain samples more effectively
+- Both models achieve the target **≥85% accuracy** on kept samples
+- SVM is prefered for deployment for its more consistency
+- KNN is simpler to implement and tune
+- In general, they are roughly the same depending on prefrerences
+
+---
+
+### Conclusion
+
+Both models performed well and succeeeded in reaching the desired accuracy
+with reporoducible results. SVM was chosen for deployment for its inference speed
+and it is not affected with parameters like KNN needing to compare many values
+with not always consistent conclusions.
